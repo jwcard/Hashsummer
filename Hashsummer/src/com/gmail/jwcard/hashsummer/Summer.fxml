@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
-	
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gmail.jwcard.hashsummer.SummerController">
-	<!-- TODO Add Nodes -->
+
+
+<BorderPane prefHeight="509.0" prefWidth="398.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.gmail.jwcard.hashsummer.SummerController">
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <items>
+            <ChoiceBox prefHeight="25.0" prefWidth="189.0" />
+            <Button mnemonicParsing="false" text="Calculate Hash" />
+            <Button mnemonicParsing="false" text="Compare Hash" />
+         </items>
+      </ToolBar>
+   </top>
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <top>
+            <TextField alignment="CENTER" editable="false" text="No file opened..." BorderPane.alignment="CENTER" />
+         </top>
+         <center>
+            <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </center>
+         <bottom>
+            <HBox alignment="CENTER" prefHeight="34.0" prefWidth="398.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" text="Save File" />
+                  <Button mnemonicParsing="false" text="Stop" />
+                  <Button mnemonicParsing="false" text="Clear" />
+               </children>
+            </HBox>
+         </bottom>
+      </BorderPane>
+   </center>
 </BorderPane>
