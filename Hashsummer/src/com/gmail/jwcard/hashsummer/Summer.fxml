@@ -5,31 +5,30 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-
-<BorderPane prefHeight="509.0" prefWidth="398.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.gmail.jwcard.hashsummer.SummerController">
+<BorderPane fx:id="root" prefHeight="509.0" prefWidth="398.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gmail.jwcard.hashsummer.SummerController">
    <top>
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <items>
-            <ChoiceBox prefHeight="25.0" prefWidth="189.0" />
-            <Button mnemonicParsing="false" text="Calculate Hash" />
-            <Button mnemonicParsing="false" text="Compare Hash" />
+            <ChoiceBox fx:id="algorithmButton" prefHeight="25.0" prefWidth="189.0" />
+            <Button fx:id="calcHashButton" mnemonicParsing="false" text="Calculate Hash" />
+            <Button fx:id="cmpHashButton" mnemonicParsing="false" text="Compare Hash" />
          </items>
       </ToolBar>
    </top>
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <top>
-            <TextField alignment="CENTER" editable="false" text="No file opened..." BorderPane.alignment="CENTER" />
+            <TextField fx:id="statusWindow" alignment="CENTER" editable="false" text="No file opened..." BorderPane.alignment="CENTER" />
          </top>
          <center>
-            <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <TextArea fx:id="hashResultTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
          </center>
          <bottom>
             <HBox alignment="CENTER" prefHeight="34.0" prefWidth="398.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" text="Save File" />
-                  <Button mnemonicParsing="false" text="Stop" />
-                  <Button mnemonicParsing="false" text="Clear" />
+                  <Button fx:id="saveButton" mnemonicParsing="false" text="Save File" />
+                  <Button fx:id="stopButton" mnemonicParsing="false" text="Stop" />
+                  <Button fx:id="clearButton" mnemonicParsing="false" text="Clear" />
                </children>
             </HBox>
          </bottom>
