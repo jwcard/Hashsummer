@@ -100,6 +100,13 @@ public class SummerController {
             @Override
             protected Void call() throws Exception {
                 for (File f : files) {
+                    hashFile(f);
+                }
+                return null;
+            }
+
+            private void hashFile(File f) {
+                if (f.isFile()) {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -112,13 +119,13 @@ public class SummerController {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            hashResultTextArea.appendText(f.getName() + "\n");
+                            hashResultTextArea
+                                    .appendText(f.getName() + "\n");
                         }
                     });
 
                     tempDelay();
                 }
-                return null;
             }
 
             private void tempDelay() {
