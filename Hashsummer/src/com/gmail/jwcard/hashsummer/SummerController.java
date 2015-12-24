@@ -93,9 +93,9 @@ public class SummerController {
 	fileChooser.getExtensionFilters()
 		.addAll(new FileChooser.ExtensionFilter("Hash file", "*.sum"));
 
-	File newsletter = fileChooser
+	File sumFile = fileChooser
 		.showOpenDialog(root.getScene().getWindow());
-	if (newsletter != null) {
+	if (sumFile != null) {
 	}
     }
 }
