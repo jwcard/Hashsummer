@@ -8,7 +8,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.net.ssl.HostnameVerifier;
+
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -77,25 +81,67 @@ public class SummerController {
 
     @FXML
     void doCalculateHash(ActionEvent event) {
-	FileChooser fileChooser = new FileChooser();
-	fileChooser.setTitle("Calculate hash on files");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Calculate hash on files");
+        String home = System.getProperty("user.home");
+        fileChooser.setInitialDirectory(new File(home));
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("All files", "*.*"));
 
-	List<File> files = fileChooser
-		.showOpenMultipleDialog(root.getScene().getWindow());
-	if (files != null) {
-	}
+        List<File> files = fileChooser
+                .showOpenMultipleDialog(root.getScene().getWindow());
+        if (files != null) {
+            Task<Void> task = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    for (File f : files) {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                statusWindow.setText(f.getName());
+                            }
+                        });
+
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            //
+                        }
+
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                hashResultTextArea
+                                        .appendText(f.getName() + "\n");
+                            }
+                        });
+
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            //
+                        }
+                    }
+                    return null;
+                }
+            };
+            Thread th = new Thread(task);
+            th.setDaemon(false);
+            th.start();
+        }
     }
 
     @FXML
     void doCompareHash(ActionEvent event) {
-	FileChooser fileChooser = new FileChooser();
-	fileChooser.setTitle("Open Newsletter File");
-	fileChooser.getExtensionFilters()
-		.addAll(new FileChooser.ExtensionFilter("Hash file", "*.sum"));
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Newsletter File");
+        String home = System.getProperty("user.home");
+        fileChooser.setInitialDirectory(new File(home));
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("Hash file", "*.sum"));
 
-	File sumFile = fileChooser
-		.showOpenDialog(root.getScene().getWindow());
-	if (sumFile != null) {
-	}
+        File sumFile = fileChooser.showOpenDialog(root.getScene().getWindow());
+        if (sumFile != null) {
+        }
     }
 }
