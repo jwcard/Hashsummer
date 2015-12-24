@@ -10,7 +10,7 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <items>
             <ChoiceBox fx:id="algorithmButton" prefHeight="25.0" prefWidth="189.0" />
-            <Button fx:id="calcHashButton" mnemonicParsing="false" text="Calculate Hash" />
+            <Button fx:id="calcHashButton" mnemonicParsing="false" onAction="#doCalculateHash" text="Calculate Hash" />
             <Button fx:id="cmpHashButton" mnemonicParsing="false" text="Compare Hash" />
          </items>
       </ToolBar>

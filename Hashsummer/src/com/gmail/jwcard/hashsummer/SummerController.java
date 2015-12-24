@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.Set;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -69,5 +70,10 @@ public class SummerController {
 	// always pick the last one which will be typically a SHA algorithm
 	algorithmButton.setValue(options[options.length - 1]);
 	algorithmButton.setTooltip(new Tooltip("Message digest algorithm"));
+    }
+
+    @FXML
+    void doCalculateHash(ActionEvent event) {
+
     }
 }
