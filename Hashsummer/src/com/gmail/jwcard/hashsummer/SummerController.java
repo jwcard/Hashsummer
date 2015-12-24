@@ -91,44 +91,47 @@ public class SummerController {
         List<File> files = fileChooser
                 .showOpenMultipleDialog(root.getScene().getWindow());
         if (files != null) {
-            Task<Void> task = new Task<Void>() {
-                @Override
-                protected Void call() throws Exception {
-                    for (File f : files) {
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                statusWindow.setText(f.getName());
-                            }
-                        });
-
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            //
-                        }
-
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                hashResultTextArea
-                                        .appendText(f.getName() + "\n");
-                            }
-                        });
-
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            //
-                        }
-                    }
-                    return null;
-                }
-            };
-            Thread th = new Thread(task);
-            th.setDaemon(false);
-            th.start();
+            handleCompute(files);
         }
+    }
+
+    private void handleCompute(final List<File> files) {
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                for (File f : files) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            statusWindow.setText(f.getName());
+                        }
+                    });
+
+                    tempDelay();
+
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            hashResultTextArea.appendText(f.getName() + "\n");
+                        }
+                    });
+
+                    tempDelay();
+                }
+                return null;
+            }
+
+            private void tempDelay() {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    //
+                }
+            }
+        };
+        Thread th = new Thread(task);
+        th.setDaemon(false);
+        th.start();
     }
 
     @FXML
