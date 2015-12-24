@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 
 public class SummerController {
@@ -67,5 +68,6 @@ public class SummerController {
 	algorithmButton.setItems(FXCollections.observableArrayList(options));
 	// always pick the last one which will be typically a SHA algorithm
 	algorithmButton.setValue(options[options.length - 1]);
+	algorithmButton.setTooltip(new Tooltip("Message digest algorithm"));
     }
 }
