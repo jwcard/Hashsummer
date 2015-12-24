@@ -1,7 +1,11 @@
 package com.gmail.jwcard.hashsummer;
 
 import java.net.URL;
+import java.security.Security;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.Set;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -27,7 +31,7 @@ public class SummerController {
     private Button clearButton; // Value injected by FXMLLoader
 
     @FXML // fx:id="algorithmButton"
-    private ChoiceBox<?> algorithmButton; // Value injected by FXMLLoader
+    private ChoiceBox<String> algorithmButton; // Value injected by FXMLLoader
 
     @FXML // fx:id="stopButton"
     private Button stopButton; // Value injected by FXMLLoader
@@ -56,5 +60,12 @@ public class SummerController {
 	assert saveButton != null : "fx:id=\"saveButton\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert calcHashButton != null : "fx:id=\"calcHashButton\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert cmpHashButton != null : "fx:id=\"cmpHashButton\" was not injected: check your FXML file 'Summer.fxml'.";
+	
+	Set<String> digests = Security.getAlgorithms("MessageDigest");
+	String[] options = digests.toArray(new String[digests.size()]);
+	Arrays.sort(options);
+	algorithmButton.setItems(FXCollections.observableArrayList(options));
+	// always pick the last one which will be typically a SHA algorithm
+	algorithmButton.setValue(options[options.length - 1]);
     }
 }
