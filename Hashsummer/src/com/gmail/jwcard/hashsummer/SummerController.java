@@ -83,8 +83,6 @@ public class SummerController {
         fileChooser.setTitle("Calculate hash on files");
         String home = System.getProperty("user.home");
         fileChooser.setInitialDirectory(new File(home));
-        fileChooser.getExtensionFilters()
-                .addAll(new FileChooser.ExtensionFilter("All files", "*.*"));
 
         List<File> files = fileChooser
                 .showOpenMultipleDialog(root.getScene().getWindow());
