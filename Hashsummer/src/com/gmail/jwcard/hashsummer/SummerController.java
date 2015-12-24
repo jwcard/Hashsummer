@@ -1,10 +1,13 @@
 package com.gmail.jwcard.hashsummer;
 
+import java.io.File;
 import java.net.URL;
 import java.security.Security;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +17,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 
 public class SummerController {
 
@@ -73,11 +77,25 @@ public class SummerController {
 
     @FXML
     void doCalculateHash(ActionEvent event) {
+	FileChooser fileChooser = new FileChooser();
+	fileChooser.setTitle("Calculate hash on files");
 
+	List<File> files = fileChooser
+		.showOpenMultipleDialog(root.getScene().getWindow());
+	if (files != null) {
+	}
     }
 
     @FXML
     void doCompareHash(ActionEvent event) {
+	FileChooser fileChooser = new FileChooser();
+	fileChooser.setTitle("Open Newsletter File");
+	fileChooser.getExtensionFilters()
+		.addAll(new FileChooser.ExtensionFilter("Hash file", "*.sum"));
 
+	File newsletter = fileChooser
+		.showOpenDialog(root.getScene().getWindow());
+	if (newsletter != null) {
+	}
     }
 }
