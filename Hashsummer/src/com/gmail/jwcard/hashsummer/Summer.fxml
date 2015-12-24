@@ -11,7 +11,7 @@
          <items>
             <ChoiceBox fx:id="algorithmButton" prefHeight="25.0" prefWidth="189.0" />
             <Button fx:id="calcHashButton" mnemonicParsing="false" onAction="#doCalculateHash" text="Calculate Hash" />
-            <Button fx:id="cmpHashButton" mnemonicParsing="false" text="Compare Hash" />
+            <Button fx:id="cmpHashButton" mnemonicParsing="false" onAction="#doCompareHash" text="Compare Hash" />
          </items>
       </ToolBar>
    </top>

@@ -50,8 +50,7 @@ public class SummerController {
     @FXML // fx:id="cmpHashButton"
     private Button cmpHashButton; // Value injected by FXMLLoader
 
-    @FXML // This method is called by the FXMLLoader when initialization is
-	  // complete
+    @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
 	assert hashResultTextArea != null : "fx:id=\"hashResultTextArea\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert clearButton != null : "fx:id=\"clearButton\" was not injected: check your FXML file 'Summer.fxml'.";
@@ -74,6 +73,11 @@ public class SummerController {
 
     @FXML
     void doCalculateHash(ActionEvent event) {
+
+    }
+
+    @FXML
+    void doCompareHash(ActionEvent event) {
 
     }
 }
