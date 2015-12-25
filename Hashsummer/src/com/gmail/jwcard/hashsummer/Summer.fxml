@@ -20,9 +20,6 @@
          <top>
             <TextField fx:id="statusWindow" alignment="CENTER" editable="false" text="No file opened..." BorderPane.alignment="CENTER" />
          </top>
-         <center>
-            <TextArea fx:id="hashResultTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-         </center>
          <bottom>
             <HBox alignment="CENTER" prefHeight="34.0" prefWidth="398.0" BorderPane.alignment="CENTER">
                <children>
@@ -32,6 +29,14 @@
                </children>
             </HBox>
          </bottom>
+         <center>
+            <TableView fx:id="hashTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn fx:id="fileColumn" editable="false" maxWidth="512.0" prefWidth="178.0" text="File" />
+                <TableColumn fx:id="hashColumn" maxWidth="512.0" prefWidth="219.0" sortable="false" text="Hash" />
+              </columns>
+            </TableView>
+         </center>
       </BorderPane>
    </center>
 </BorderPane>

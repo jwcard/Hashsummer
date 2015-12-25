@@ -15,7 +15,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
@@ -31,9 +32,6 @@ public class SummerController {
 
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;
-
-    @FXML // fx:id="hashResultTextArea"
-    private TextArea hashResultTextArea; // Value injected by FXMLLoader
 
     @FXML // fx:id="clearButton"
     private Button clearButton; // Value injected by FXMLLoader
@@ -55,10 +53,18 @@ public class SummerController {
 
     @FXML // fx:id="cmpHashButton"
     private Button cmpHashButton; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="hashTable"
+    private TableView<?> hashTable; // Value injected by FXMLLoader
+
+    @FXML // fx:id="fileColumn"
+    private TableColumn<?, ?> fileColumn; // Value injected by FXMLLoader
+
+    @FXML // fx:id="hashColumn"
+    private TableColumn<?, ?> hashColumn; // Value injected by FXMLLoader
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-	assert hashResultTextArea != null : "fx:id=\"hashResultTextArea\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert clearButton != null : "fx:id=\"clearButton\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert algorithmButton != null : "fx:id=\"algorithmButton\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert root != null : "fx:id=\"root\" was not injected: check your FXML file 'Summer.fxml'.";
@@ -67,6 +73,9 @@ public class SummerController {
 	assert saveButton != null : "fx:id=\"saveButton\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert calcHashButton != null : "fx:id=\"calcHashButton\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert cmpHashButton != null : "fx:id=\"cmpHashButton\" was not injected: check your FXML file 'Summer.fxml'.";
+	 assert hashTable != null : "fx:id=\"hashTable\" was not injected: check your FXML file 'Summer.fxml'.";
+	        assert fileColumn != null : "fx:id=\"fileColumn\" was not injected: check your FXML file 'Summer.fxml'.";
+	        assert hashColumn != null : "fx:id=\"hashColumn\" was not injected: check your FXML file 'Summer.fxml'.";
 	
 	Set<String> digests = Security.getAlgorithms("MessageDigest");
 	String[] options = digests.toArray(new String[digests.size()]);
@@ -112,13 +121,7 @@ public class SummerController {
 
                     tempDelay();
 
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            hashResultTextArea
-                                    .appendText(f.getName() + "\n");
-                        }
-                    });
+                    // TODO add dummy table values
 
                     tempDelay();
                 }
