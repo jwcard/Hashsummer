@@ -73,10 +73,10 @@ public class SummerController {
 	assert saveButton != null : "fx:id=\"saveButton\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert calcHashButton != null : "fx:id=\"calcHashButton\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert cmpHashButton != null : "fx:id=\"cmpHashButton\" was not injected: check your FXML file 'Summer.fxml'.";
-	 assert hashTable != null : "fx:id=\"hashTable\" was not injected: check your FXML file 'Summer.fxml'.";
-	        assert fileColumn != null : "fx:id=\"fileColumn\" was not injected: check your FXML file 'Summer.fxml'.";
-	        assert hashColumn != null : "fx:id=\"hashColumn\" was not injected: check your FXML file 'Summer.fxml'.";
-	
+	assert hashTable != null : "fx:id=\"hashTable\" was not injected: check your FXML file 'Summer.fxml'.";
+	assert fileColumn != null : "fx:id=\"fileColumn\" was not injected: check your FXML file 'Summer.fxml'.";
+	assert hashColumn != null : "fx:id=\"hashColumn\" was not injected: check your FXML file 'Summer.fxml'.";
+
 	Set<String> digests = Security.getAlgorithms("MessageDigest");
 	String[] options = digests.toArray(new String[digests.size()]);
 	Arrays.sort(options);
