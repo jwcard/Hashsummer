@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="root" prefHeight="509.0" prefWidth="398.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gmail.jwcard.hashsummer.SummerController">
+<BorderPane fx:id="root" prefHeight="509.0" prefWidth="398.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gmail.jwcard.hashsummer.SummerController">
    <top>
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <items>
-            <ChoiceBox fx:id="algorithmButton" prefHeight="25.0" prefWidth="189.0" />
+            <ChoiceBox fx:id="algorithmButton" prefHeight="25.0" prefWidth="189.0" style="-fx-background-radius: 9;" />
             <Button fx:id="calcHashButton" mnemonicParsing="false" onAction="#doCalculateHash" text="Calculate Hash" />
             <Button fx:id="cmpHashButton" mnemonicParsing="false" onAction="#doCompareHash" text="Compare Hash" />
          </items>
