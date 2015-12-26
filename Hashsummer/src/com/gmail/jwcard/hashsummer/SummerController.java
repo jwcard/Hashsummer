@@ -21,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 
@@ -57,7 +58,7 @@ public class SummerController {
     private Button cmpHashButton; // Value injected by FXMLLoader
     
     @FXML // fx:id="hashTable"
-    private TableView<?> hashTable; // Value injected by FXMLLoader
+    private TableView<HashValue> hashTable; // Value injected by FXMLLoader
 
     @FXML // fx:id="fileColumn"
     private TableColumn<?, ?> fileColumn; // Value injected by FXMLLoader
@@ -66,10 +67,10 @@ public class SummerController {
     private TableColumn<?, ?> hashColumn; // Value injected by FXMLLoader
     
     protected static ObservableList<HashValue> data = FXCollections.<HashValue>observableArrayList(
-            new HashValue("Note 1", "Description of note 41"),
-              new HashValue("Note 2", "Description of note 32"),
-              new HashValue("Note 3", "Description of note 23"),
-              new HashValue("Note 4", "Description of note 14"));
+            new HashValue("File 1", "Dummy value Dummy value Dummy value Dummy value Dummy value Dummy value"),
+              new HashValue("File 2", "Dummy value Dummy value Dummy value Dummy value Dummy value Dummy value"),
+              new HashValue("File 3", "Dummy value Dummy value Dummy value Dummy value Dummy value Dummy value"),
+              new HashValue("File 4", "Dummy value Dummy value Dummy value Dummy value Dummy value Dummy value"));
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
@@ -94,6 +95,10 @@ public class SummerController {
 	algorithmButton.setTooltip(new Tooltip("Message digest algorithm"));
 	
 	FilteredList<HashValue> filteredData = new FilteredList<>(data, n -> true);
+	hashTable.setItems(filteredData);
+	
+	fileColumn.setCellValueFactory(new PropertyValueFactory<>("filename"));
+	hashColumn.setCellValueFactory(new PropertyValueFactory<>("hash"));
     }
 
     @FXML
