@@ -10,6 +10,8 @@ import java.util.Set;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,6 +64,12 @@ public class SummerController {
 
     @FXML // fx:id="hashColumn"
     private TableColumn<?, ?> hashColumn; // Value injected by FXMLLoader
+    
+    protected static ObservableList<HashValue> data = FXCollections.<HashValue>observableArrayList(
+            new HashValue("Note 1", "Description of note 41"),
+              new HashValue("Note 2", "Description of note 32"),
+              new HashValue("Note 3", "Description of note 23"),
+              new HashValue("Note 4", "Description of note 14"));
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
@@ -84,6 +92,8 @@ public class SummerController {
 	// always pick the last one which will be typically a SHA algorithm
 	algorithmButton.setValue(options[options.length - 1]);
 	algorithmButton.setTooltip(new Tooltip("Message digest algorithm"));
+	
+	FilteredList<HashValue> filteredData = new FilteredList<>(data, n -> true);
     }
 
     @FXML
