@@ -13,6 +13,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.security.Security;
 
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
+
 import javafx.beans.property.SimpleStringProperty;
 
 /**
@@ -45,11 +47,15 @@ public class HashValue {
             MessageDigest md = MessageDigest.getInstance(algorithm);
 
             long len = file.length();
+            long curPos = 0;
             byte[] buffer = new byte[1024 * 1024];
             BufferedInputStream input = new BufferedInputStream(new FileInputStream(file));
-//            while (len > 0) {
-//                input.read(buffer, 0, 0);
-//            }
+            while (len > 0) {
+                long bytesRead = input.read(buffer, 0, buffer.length);
+                md.update(buffer, 0, (int)bytesRead);
+                curPos += bytesRead;
+                len -= bytesRead;
+            }
             input.close();
             byte[] hashValue = md.digest();
             //convert the byte to hex format method 1
