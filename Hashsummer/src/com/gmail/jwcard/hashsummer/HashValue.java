@@ -1,7 +1,5 @@
 package com.gmail.jwcard.hashsummer;
 
-import java.io.File;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
@@ -9,7 +7,6 @@ import javafx.beans.property.SimpleStringProperty;
  *
  */
 public class HashValue {
-    private ObjectProperty<File> file;  //TODO this type preferred
     private final SimpleStringProperty filename;
     private final SimpleStringProperty hash;
     
