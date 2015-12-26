@@ -66,11 +66,7 @@ public class SummerController {
     @FXML // fx:id="hashColumn"
     private TableColumn<?, ?> hashColumn; // Value injected by FXMLLoader
     
-    protected static ObservableList<HashValue> data = FXCollections.<HashValue>observableArrayList(
-            new HashValue("File 1", "Dummy value Dummy value Dummy value Dummy value Dummy value Dummy value"),
-              new HashValue("File 2", "Dummy value Dummy value Dummy value Dummy value Dummy value Dummy value"),
-              new HashValue("File 3", "Dummy value Dummy value Dummy value Dummy value Dummy value Dummy value"),
-              new HashValue("File 4", "Dummy value Dummy value Dummy value Dummy value Dummy value Dummy value"));
+    protected static ObservableList<HashValue> data = FXCollections.<HashValue>observableArrayList();
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
@@ -134,9 +130,8 @@ public class SummerController {
                         }
                     });
 
-                    tempDelay();
-
-                    // TODO add dummy table values
+                    // TODO compute real hash
+                    data.add(new HashValue(f.getName(), "afafafafafafaf"));
 
                     tempDelay();
                 }
