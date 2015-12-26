@@ -115,23 +115,24 @@ public class SummerController {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                for (File f : files) {
-                    hashFile(f);
+                String algorithm = algorithmButton.getValue();
+                for (File file : files) {
+                    hashFile(file, algorithm);
                 }
                 return null;
             }
 
-            private void hashFile(File f) {
-                if (f.isFile()) {
+            private void hashFile(File file, String algorithm) {
+                if (file.isFile()) {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            statusWindow.setText(f.getName());
+                            statusWindow.setText(file.getName());
                         }
                     });
 
                     // TODO compute real hash
-                    data.add(new HashValue(f.getName(), "afafafafafafaf"));
+                    data.add(new HashValue(file, algorithm));
 
                     tempDelay();
                 }
