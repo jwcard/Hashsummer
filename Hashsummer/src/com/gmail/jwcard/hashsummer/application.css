@@ -1,8 +1,10 @@
 .root {
      -fx-background-image: url("background.jpg");
-     -fx-background-size: contain ;
 }
 
 .tableStyle {
     -fx-font: 12px "monospace";
+}
+
+.button {
 }
