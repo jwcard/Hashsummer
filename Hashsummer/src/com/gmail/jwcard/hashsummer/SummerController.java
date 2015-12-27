@@ -174,4 +174,9 @@ public class SummerController {
             s = (String) fileColumn.getCellData(++i);
         }
     }
+    
+    @FXML
+    void doClear(ActionEvent event) {
+        data.clear();
+    }
 }

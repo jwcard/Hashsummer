@@ -25,7 +25,7 @@
                <children>
                   <Button fx:id="saveButton" mnemonicParsing="false" onAction="#doSave" text="Save File" />
                   <Button fx:id="stopButton" mnemonicParsing="false" text="Stop" />
-                  <Button fx:id="clearButton" mnemonicParsing="false" text="Clear" />
+                  <Button fx:id="clearButton" mnemonicParsing="false" onAction="#doClear" text="Clear" />
                </children>
             </HBox>
          </bottom>
