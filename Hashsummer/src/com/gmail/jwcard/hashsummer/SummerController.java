@@ -164,4 +164,14 @@ public class SummerController {
         if (sumFile != null) {
         }
     }
+
+    @FXML
+    void doSave(ActionEvent event) {
+        int i = 0;
+        String s = (String) fileColumn.getCellData(i);
+        while (s != null) {
+            System.out.println(s + ", " + (String) hashColumn.getCellData(i));
+            s = (String) fileColumn.getCellData(++i);
+        }
+    }
 }

@@ -23,7 +23,7 @@
          <bottom>
             <HBox alignment="CENTER" prefHeight="34.0" prefWidth="398.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="saveButton" mnemonicParsing="false" text="Save File" />
+                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#doSave" text="Save File" />
                   <Button fx:id="stopButton" mnemonicParsing="false" text="Stop" />
                   <Button fx:id="clearButton" mnemonicParsing="false" text="Clear" />
                </children>
