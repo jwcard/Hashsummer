@@ -60,7 +60,7 @@ public class SummerController {
 
     @FXML // fx:id="cmpHashButton"
     private Button cmpHashButton; // Value injected by FXMLLoader
-    
+
     @FXML // fx:id="hashTable"
     private TableView<HashValue> hashTable; // Value injected by FXMLLoader
 
@@ -69,10 +69,11 @@ public class SummerController {
 
     @FXML // fx:id="hashColumn"
     private TableColumn<?, ?> hashColumn; // Value injected by FXMLLoader
-    
-    protected static ObservableList<HashValue> data = FXCollections.<HashValue>observableArrayList();
 
-    @FXML // This method is called by the FXMLLoader when initialization is complete
+    protected static ObservableList<HashValue> data = FXCollections.<HashValue> observableArrayList();
+
+    @FXML // This method is called by the FXMLLoader when initialization is
+          // complete
     void initialize() {
         assert clearButton != null : "fx:id=\"clearButton\" was not injected: check your FXML file 'Summer.fxml'.";
         assert algorithmButton != null : "fx:id=\"algorithmButton\" was not injected: check your FXML file 'Summer.fxml'.";
@@ -95,8 +96,7 @@ public class SummerController {
         algorithmButton.setValue(options[options.length - 1]);
         algorithmButton.setTooltip(new Tooltip("Message digest algorithm"));
 
-        FilteredList<HashValue> filteredData = new FilteredList<>(data,
-                n -> true);
+        FilteredList<HashValue> filteredData = new FilteredList<>(data, n -> true);
         hashTable.setItems(filteredData);
 
         fileColumn.setCellValueFactory(new PropertyValueFactory<>("filename"));
@@ -110,8 +110,7 @@ public class SummerController {
         String home = System.getProperty("user.home");
         fileChooser.setInitialDirectory(new File(home));
 
-        List<File> files = fileChooser
-                .showOpenMultipleDialog(root.getScene().getWindow());
+        List<File> files = fileChooser.showOpenMultipleDialog(root.getScene().getWindow());
         if (files != null) {
             handleCompute(files);
         }
@@ -151,19 +150,17 @@ public class SummerController {
                         }
                     });
 
-                    /**
-                     * @See http://stackoverflow.com/questions/31734527/javafx-bind-property-from-another-class-onto-a-status-bar
-                     *      TODO add code to complete progress bar handling
-                     */
                     HashValue hash = new HashValue(file);
-                    hash.bytesProcessedProperty().addListener((obs, oldValue,
-                            newValue) -> updateProgress(newValue.longValue(),
-                                    hash.getTotalBytes()));
+                    hash.bytesProcessedProperty().addListener((obs, oldValue, newValue) -> {
+                        updateProgress(newValue.longValue(), hash.getTotalBytes());
+                    });
                     hash.computeHash(file, algorithm);
                     data.add(hash);
                 }
             }
         };
+
+        progressBar.progressProperty().bind(task.progressProperty());
 
         Thread th = new Thread(task);
         th.setDaemon(false);
@@ -176,8 +173,7 @@ public class SummerController {
         fileChooser.setTitle("Open Newsletter File");
         String home = System.getProperty("user.home");
         fileChooser.setInitialDirectory(new File(home));
-        fileChooser.getExtensionFilters()
-                .addAll(new FileChooser.ExtensionFilter("Hash file", "*.sum"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Hash file", "*.sum"));
 
         File sumFile = fileChooser.showOpenDialog(root.getScene().getWindow());
         if (sumFile != null) {
@@ -189,16 +185,15 @@ public class SummerController {
         int i = 0;
         String s = (String) fileColumn.getCellData(i);
         while (s != null) {
-            System.out.println(s + ", " + (String) hashColumn.getCellData(i));
             s = (String) fileColumn.getCellData(++i);
         }
     }
-    
+
     @FXML
     void doStop(ActionEvent event) {
         System.out.println("stop pressed");
     }
-    
+
     @FXML
     void doClear(ActionEvent event) {
         data.clear();

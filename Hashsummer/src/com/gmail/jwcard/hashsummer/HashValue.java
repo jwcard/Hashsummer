@@ -20,7 +20,7 @@ public class HashValue {
     private final SimpleStringProperty filename;
     private SimpleStringProperty hash;
     private final ReadOnlyLongWrapper bytesProcessed = new ReadOnlyLongWrapper();
-    
+
     /**
      * @param file
      *            Target file to generate hash on
@@ -41,9 +41,10 @@ public class HashValue {
     }
 
     private long curPos;
+    private long fileLen;
 
     public long getTotalBytes() {
-        return curPos;
+        return fileLen;
     }
 
     public String getFilename() {
@@ -59,19 +60,20 @@ public class HashValue {
         try {
             MessageDigest md = MessageDigest.getInstance(algorithm);
 
-            long len = file.length();
+            fileLen = file.length();
+            long len = fileLen;
             byte[] buffer = new byte[1024 * 1024];
             BufferedInputStream input = new BufferedInputStream(new FileInputStream(file));
             while (len > 0) {
-        	
                 long bytesRead = input.read(buffer, 0, buffer.length);
-                md.update(buffer, 0, (int)bytesRead);
+                md.update(buffer, 0, (int) bytesRead);
                 curPos = curPos + bytesRead;
                 len -= bytesRead;
+                bytesProcessed.set(curPos);
             }
             input.close();
             byte[] hashValue = md.digest();
-            //convert the byte to hex format method 1
+            // convert the byte to hex format method 1
             StringBuffer hashCodeBuffer = new StringBuffer();
             for (int i = 0; i < hashValue.length; i++) {
                 hashCodeBuffer.append(Integer.toString((hashValue[i] & 0xff) + 0x100, 16).substring(1));
@@ -87,8 +89,8 @@ public class HashValue {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         this.hash = new SimpleStringProperty(hash);
         return hash;
-        }
+    }
 }
