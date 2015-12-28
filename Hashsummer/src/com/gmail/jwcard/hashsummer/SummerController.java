@@ -152,8 +152,7 @@ public class SummerController {
                     });
 
                     /**
-                     * @See http://stackoverflow.com/questions/31734527/javafx-
-                     *      bind-property-from-another-class-onto-a-status-bar
+                     * @See http://stackoverflow.com/questions/31734527/javafx-bind-property-from-another-class-onto-a-status-bar
                      *      TODO add code to complete progress bar handling
                      */
                     HashValue hash = new HashValue(file);
