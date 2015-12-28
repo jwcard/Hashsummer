@@ -125,6 +125,8 @@ public class SummerController {
                 for (File file : files) {
                     hashFile(file, algorithm);
                 }
+
+                updateProgress(-1, 0);
                 disableButtons(false);
                 return null;
             }
