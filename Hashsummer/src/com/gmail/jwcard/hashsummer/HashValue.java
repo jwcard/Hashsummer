@@ -44,15 +44,15 @@ public class HashValue {
     private long curPos;
 
     public long getTotalBytes() {
-	return curPos;
+        return curPos;
     }
 
     public String getFilename() {
-	return filename.get();
+        return filename.get();
     }
 
     public String getHash() {
-	return hash.get();
+        return hash.get();
     }
 
     public String computeHash(File file, String algorithm) {
