@@ -35,7 +35,7 @@
             </HBox>
          </bottom>
          <center>
-            <TableView fx:id="hashTable" prefHeight="200.0" prefWidth="200.0" styleClass="tableStyle" BorderPane.alignment="CENTER">
+            <TableView fx:id="hashTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
                 <TableColumn fx:id="fileColumn" editable="false" maxWidth="512.0" prefWidth="295.0" text="File" />
                 <TableColumn fx:id="hashColumn" maxWidth="1000.0" prefWidth="497.0" sortable="false" text="Hash" />

@@ -2,9 +2,14 @@
      -fx-background-image: url("background.jpg");
 }
 
-.tableStyle {
+.table-view {
     -fx-font: 12px "monospace";
 }
 
 .button {
+}
+
+.progress-bar {
+    -fx-accent: red;
+    -fx-control-inner-background: black;
 }
