@@ -121,18 +121,18 @@ public class SummerController {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-		disableButtons(true);
+                disableButtons(true);
                 String algorithm = algorithmButton.getValue();
                 for (File file : files) {
                     hashFile(file, algorithm);
                 }
-		disableButtons(false);
+                disableButtons(false);
                 return null;
             }
 
-	    /*
-	     * @param value state of general buttons
-	     */
+            /*
+             * @param value state of general buttons
+             */
             private void disableButtons(boolean value) {
                 clearButton.setDisable(value);
                 algorithmButton.setDisable(value);
@@ -163,11 +163,11 @@ public class SummerController {
                     data.add(hash);
                 }
             }
-	};
+        };
 
-	Thread th = new Thread(task);
-	th.setDaemon(false);
-	th.start();
+        Thread th = new Thread(task);
+        th.setDaemon(false);
+        th.start();
     }
 
     @FXML
