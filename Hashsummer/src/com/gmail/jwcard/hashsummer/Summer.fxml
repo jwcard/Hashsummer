@@ -18,13 +18,18 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <top>
-            <TextField fx:id="statusWindow" alignment="CENTER" editable="false" text="No file opened..." BorderPane.alignment="CENTER" />
+            <HBox BorderPane.alignment="CENTER">
+               <children>
+                  <TextField fx:id="statusWindow" alignment="CENTER" editable="false" prefHeight="25.0" prefWidth="464.0" text="No file opened..." />
+                  <ProgressBar fx:id="progressBar" prefHeight="26.0" prefWidth="329.0" />
+               </children>
+            </HBox>
          </top>
          <bottom>
             <HBox alignment="CENTER" prefHeight="34.0" prefWidth="398.0" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="saveButton" mnemonicParsing="false" onAction="#doSave" text="Save File" />
-                  <Button fx:id="stopButton" disable="true" mnemonicParsing="false" text="Stop" />
+                  <Button fx:id="stopButton" disable="true" mnemonicParsing="false" onAction="#doStop" text="Stop" />
                   <Button fx:id="clearButton" mnemonicParsing="false" onAction="#doClear" text="Clear" />
                </children>
             </HBox>
