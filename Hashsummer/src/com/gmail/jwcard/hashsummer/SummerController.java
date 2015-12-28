@@ -131,18 +131,7 @@ public class SummerController {
                         }
                     });
 
-                    // TODO compute real hash
                     data.add(new HashValue(file, algorithm));
-
-                    tempDelay();
-                }
-            }
-
-            private void tempDelay() {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    //
                 }
             }
         };
