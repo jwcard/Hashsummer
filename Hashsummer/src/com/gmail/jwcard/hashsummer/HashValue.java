@@ -29,16 +29,15 @@ public class HashValue {
      *            algorithm name
      */
     public HashValue(File file) {
-	this.filename = new SimpleStringProperty(file.getName());
-	
+        this.filename = new SimpleStringProperty(file.getName());
     }
 
     public final long getBytesProcessed() {
-	return bytesProcessed.get();
+        return bytesProcessed.get();
     }
 
     public final ReadOnlyLongProperty bytesProcessedProperty() {
-	return bytesProcessed.getReadOnlyProperty();
+        return bytesProcessed.getReadOnlyProperty();
     }
 
     private long curPos;
@@ -89,7 +88,7 @@ public class HashValue {
             e.printStackTrace();
         }
         
-        this.hash = new SimpleStringProperty(computeHash(file, algorithm));
+        this.hash = new SimpleStringProperty(hash);
         return hash;
         }
 }
