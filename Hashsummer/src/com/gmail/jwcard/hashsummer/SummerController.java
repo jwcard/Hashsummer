@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -48,6 +49,9 @@ public class SummerController {
     @FXML // fx:id="statusWindow"
     private TextField statusWindow; // Value injected by FXMLLoader
 
+    @FXML // fx:id="progressBar"
+    private ProgressBar progressBar; // Value injected by FXMLLoader
+
     @FXML // fx:id="saveButton"
     private Button saveButton; // Value injected by FXMLLoader
 
@@ -75,6 +79,7 @@ public class SummerController {
 	assert root != null : "fx:id=\"root\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert stopButton != null : "fx:id=\"stopButton\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert statusWindow != null : "fx:id=\"statusWindow\" was not injected: check your FXML file 'Summer.fxml'.";
+	assert progressBar != null : "fx:id=\"progressBar\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert saveButton != null : "fx:id=\"saveButton\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert calcHashButton != null : "fx:id=\"calcHashButton\" was not injected: check your FXML file 'Summer.fxml'.";
 	assert cmpHashButton != null : "fx:id=\"cmpHashButton\" was not injected: check your FXML file 'Summer.fxml'.";
@@ -124,8 +129,8 @@ public class SummerController {
                 return null;
             }
 
-	    /**
-	     * @param value
+	    /*
+	     * @param value state of general buttons
 	     */
 	    private void disableButtons(boolean value) {
 		clearButton.setDisable(value);
@@ -136,22 +141,32 @@ public class SummerController {
 		stopButton.setDisable(!value);
 	    }
 
-            private void hashFile(File file, String algorithm) {
-                if (file.isFile()) {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            statusWindow.setText(file.getName());
-                        }
-                    });
+	    private void hashFile(File file, String algorithm) {
+		if (file.isFile()) {
+		    Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+			    statusWindow.setText(file.getName());
+			}
+		    });
 
-                    data.add(new HashValue(file, algorithm));
-                }
-            }
-        };
-        Thread th = new Thread(task);
-        th.setDaemon(false);
-        th.start();
+		    /**
+		     * @See http://stackoverflow.com/questions/31734527/javafx-bind-property-from-another-class-onto-a-status-bar
+		     * TODO add code to complete progress bar handling
+		     */
+		    HashValue hash = new HashValue(file);
+		    hash.bytesProcessedProperty().addListener((obs, oldValue,
+			    newValue) -> updateProgress(newValue.longValue(),
+				    hash.getTotalBytes()));
+		    hash.computeHash(file, algorithm);
+		    data.add(hash);
+		}
+	    }
+	};
+
+	Thread th = new Thread(task);
+	th.setDaemon(false);
+	th.start();
     }
 
     @FXML
@@ -176,6 +191,11 @@ public class SummerController {
             System.out.println(s + ", " + (String) hashColumn.getCellData(i));
             s = (String) fileColumn.getCellData(++i);
         }
+    }
+    
+    @FXML
+    void doStop(ActionEvent event) {
+	System.out.println("stop pressed");
     }
     
     @FXML
