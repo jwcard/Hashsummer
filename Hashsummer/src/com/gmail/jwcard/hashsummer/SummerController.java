@@ -121,12 +121,13 @@ public class SummerController {
             @Override
             protected Void call() throws Exception {
                 disableButtons(true);
+
                 String algorithm = algorithmButton.getValue();
                 for (File file : files) {
                     hashFile(file, algorithm);
                 }
 
-                updateProgress(-1, 0);
+                updateProgress(-1, 0); // reset to indeterminate state
                 disableButtons(false);
                 return null;
             }
