@@ -115,12 +115,26 @@ public class SummerController {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+		disableButtons(true);
                 String algorithm = algorithmButton.getValue();
                 for (File file : files) {
                     hashFile(file, algorithm);
                 }
+		disableButtons(false);
                 return null;
             }
+
+	    /**
+	     * @param value
+	     */
+	    private void disableButtons(boolean value) {
+		clearButton.setDisable(value);
+		algorithmButton.setDisable(value);
+		saveButton.setDisable(value);
+		calcHashButton.setDisable(value);
+		cmpHashButton.setDisable(value);
+		stopButton.setDisable(!value);
+	    }
 
             private void hashFile(File file, String algorithm) {
                 if (file.isFile()) {
