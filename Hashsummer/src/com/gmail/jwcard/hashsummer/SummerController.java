@@ -2,6 +2,8 @@ package com.gmail.jwcard.hashsummer;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import au.com.bytecode.opencsv.CSVReader;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -204,18 +207,37 @@ public class SummerController {
 		th.start();
 	}
 
-    @FXML
-    void doCompareHash(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Compare hash");
-        String home = System.getProperty("user.home");
-        fileChooser.setInitialDirectory(new File(home));
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Hash file", "*.sum"));
+	@FXML
+	void doCompareHash(ActionEvent event) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Compare hash");
+		String home = System.getProperty("user.home");
+		fileChooser.setInitialDirectory(new File(home));
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Hash file", "*.sum"));
 
-        File sumFile = fileChooser.showOpenDialog(root.getScene().getWindow());
-        if (sumFile != null) {
-        }
-    }
+		File sumFile = fileChooser.showOpenDialog(root.getScene().getWindow());
+		if (sumFile != null) {
+			CSVReader reader;
+			try {
+				reader = new CSVReader(new FileReader(sumFile));
+				List<String[]> myEntries = reader.readAll();
+
+				// TODO put the real logic here
+				for (String[] s : myEntries) {
+					for (String x : s) {
+						System.out.print(x + "| ");
+					}
+					System.out.println("");
+				}
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
 	@FXML
 	void doSave(ActionEvent event) {
@@ -228,6 +250,12 @@ public class SummerController {
 		File sumFile = fileChooser.showSaveDialog(root.getScene().getWindow());
 		if (sumFile != null) {
 			try {
+				// TODO http://opencsv.sourceforge.net/
+//				CSVWriter writer = new CSVWriter(new FileWriter("yourfile.csv"), '\t');
+//			     // feed in your array (or convert your data to an array)
+//			     String[] entries = "first#second#third".split("#");
+//			     writer.writeNext(entries);
+//				 writer.close();
 				BufferedWriter fb = new BufferedWriter(new FileWriter(sumFile));
 				int rowCnt = fileColumn.getTableView().getItems().size();
 				for (int i = 0; i < rowCnt; i++) {
