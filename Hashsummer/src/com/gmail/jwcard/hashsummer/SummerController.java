@@ -245,19 +245,23 @@ public class SummerController {
 
     @FXML
     void doStop(ActionEvent event) {
-        System.out.println("stop pressed");
         task.cancel();
     }
 
-    @FXML
-    void doClear(ActionEvent event) {
-        data.clear();
-        saveButton.setDisable(true); // disable the save button now
-        errorExists = false; // clear the error indicator
-        statusWindow.setText("");
-    }
-    
-    static public boolean isCancelled() {
-    	return task.isCancelled();
-    }
+	@FXML
+	void doClear(ActionEvent event) {
+		data.clear();
+		saveButton.setDisable(true); // disable the save button now
+		errorExists = false; // clear the error indicator
+		statusWindow.setText("");
+	}
+
+	/**
+	 * Allows other objects to query whether they should abort their processing
+	 * 
+	 * @return true if a cancel request has been made otherwise false
+	 */
+	static public boolean isCancelled() {
+		return task.isCancelled();
+	}
 }
