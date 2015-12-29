@@ -86,11 +86,6 @@ public class SummerController {
     // indicates whether or not an error was ever generated when computing hashes
     private boolean errorExists = false;
     
-    private enum LastOp {
-            HASH,
-            CMPHASH
-    };
-    
     private LastOp lastOp = LastOp.HASH;
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -129,8 +124,7 @@ public class SummerController {
     void doCalculateHash(ActionEvent event) {
         // If the last operation was a compare hash then clear the data as the results column is incompatible with the save format
         if (lastOp == LastOp.CMPHASH) {
-            data.clear();
-            statusWindow.setText("");
+            clearInfo();
         }
 
         lastOp = LastOp.HASH;
@@ -222,8 +216,7 @@ public class SummerController {
 
     @FXML
     void doCompareHash(ActionEvent event) {
-        data.clear();
-        statusWindow.setText("");
+        clearInfo();
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Compare hash");
@@ -344,10 +337,9 @@ public class SummerController {
 
     @FXML
     void doClear(ActionEvent event) {
-        data.clear();
+    	clearInfo(); // start anew...
         saveButton.setDisable(true); // disable the save button now
         errorExists = false; // clear the error indicator
-        statusWindow.setText("");
     }
 
     /**
@@ -358,4 +350,12 @@ public class SummerController {
     static public boolean isCancelled() {
         return task.isCancelled();
     }
+
+	/**
+	 * Clear out the generated data from the display
+	 */
+	private void clearInfo() {
+		data.clear();
+        statusWindow.setText("");
+	}
 }
