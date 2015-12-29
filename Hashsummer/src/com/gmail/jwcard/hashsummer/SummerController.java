@@ -184,12 +184,7 @@ public class SummerController {
                     saveButton.setDisable(true);
                 }
 
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						statusWindow.setText("*** Done ***");
-					}
-				});
+				doneStatus();
 
                 return null;
             }
@@ -280,6 +275,7 @@ public class SummerController {
 
                 updateProgress(-1, 0); // reset to indeterminate state
                 disableButtons(false);
+                doneStatus();
 
                 return null;
             }
@@ -367,5 +363,17 @@ public class SummerController {
 	private void clearInfo() {
 		data.clear();
         statusWindow.setText("");
+	}
+
+	/**
+	 * 
+	 */
+	private void doneStatus() {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				statusWindow.setText("*** Done ***");
+			}
+		});
 	}
 }
