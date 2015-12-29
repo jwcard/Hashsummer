@@ -1,6 +1,9 @@
 package com.gmail.jwcard.hashsummer;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.security.Security;
 import java.util.Arrays;
@@ -67,13 +70,21 @@ public class SummerController {
     @FXML // fx:id="fileColumn"
     private TableColumn<?, ?> fileColumn; // Value injected by FXMLLoader
 
-    @FXML // fx:id="hashColumn"
-    private TableColumn<?, ?> hashColumn; // Value injected by FXMLLoader
+	@FXML // fx:id="hashColumn"
+	private TableColumn<?, ?> hashColumn; // Value injected by FXMLLoader
+	
+	// ================ end of JavaFX declarations
 
-    protected static ObservableList<HashValue> data = FXCollections.<HashValue> observableArrayList();
+	protected static ObservableList<HashValue> data = FXCollections.<HashValue> observableArrayList();
 
-    @FXML // This method is called by the FXMLLoader when initialization is
-          // complete
+	// Only one task can run at a time since buttons are disabled once processing starts.
+	private static Task<Void> task = null;
+	
+	// indicates whether or not an error was ever generated when computing hashes
+	private boolean errorExists = false;
+
+
+	@FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert clearButton != null : "fx:id=\"clearButton\" was not injected: check your FXML file 'Summer.fxml'.";
         assert algorithmButton != null : "fx:id=\"algorithmButton\" was not injected: check your FXML file 'Summer.fxml'.";
@@ -94,10 +105,12 @@ public class SummerController {
         algorithmButton.setItems(FXCollections.observableArrayList(options));
         // always pick the last one which will be typically a SHA algorithm
         algorithmButton.setValue(options[options.length - 1]);
+
         algorithmButton.setTooltip(new Tooltip("Message digest algorithm"));
 
-        FilteredList<HashValue> filteredData = new FilteredList<>(data, n -> true);
-        hashTable.setItems(filteredData);
+        // Not really used at the moment
+		FilteredList<HashValue> filteredData = new FilteredList<>(data, n -> true);
+		hashTable.setItems(filteredData);
 
         fileColumn.setCellValueFactory(new PropertyValueFactory<>("filename"));
         hashColumn.setCellValueFactory(new PropertyValueFactory<>("hash"));
@@ -113,67 +126,88 @@ public class SummerController {
         List<File> files = fileChooser.showOpenMultipleDialog(root.getScene().getWindow());
         if (files != null) {
             handleCompute(files);
+            saveButton.setDisable(false); // enable the save button now
         }
     }
 
-    private void handleCompute(final List<File> files) {
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                disableButtons(true);
+	/*
+	 * Spin off a JavaFX Task in the background to handle the computing of hash values for the selected files.
+	 */
+	private void handleCompute(final List<File> files) {
+		task = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				disableButtons(true);
 
-                String algorithm = algorithmButton.getValue();
-                for (File file : files) {
-                    hashFile(file, algorithm);
-                }
+				String algorithm = algorithmButton.getValue();
+				for (File file : files) {
+					// if cancelled was pressed then save button is not valid
+					if (isCancelled()) {
+						saveButton.setDisable(true);
+						break;
+					}
+					if (hashFile(file, algorithm) == null) {
+						errorExists = true;
+					}
+				}
 
-                updateProgress(-1, 0); // reset to indeterminate state
-                disableButtons(false);
-                return null;
-            }
+				updateProgress(-1, 0); // reset to indeterminate state
+				disableButtons(false);
 
-            /*
-             * @param value state of general buttons
-             */
-            private void disableButtons(boolean value) {
-                clearButton.setDisable(value);
-                algorithmButton.setDisable(value);
-                saveButton.setDisable(value);
-                calcHashButton.setDisable(value);
-                cmpHashButton.setDisable(value);
-                stopButton.setDisable(!value);
-            }
+				if (errorExists) {
+					saveButton.setDisable(true);
+				}
+				return null;
+			}
 
-            private void hashFile(File file, String algorithm) {
-                if (file.isFile()) {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            statusWindow.setText(file.getName());
-                        }
-                    });
+			/*
+			 * @param value state of general buttons
+			 */
+			private void disableButtons(boolean value) {
+				clearButton.setDisable(value);
+				algorithmButton.setDisable(value);
+				calcHashButton.setDisable(value);
+				cmpHashButton.setDisable(value);
+				saveButton.setDisable(value);
+				stopButton.setDisable(!value);
+			}
 
-                    HashValue hash = new HashValue(file);
-                    hash.bytesProcessedProperty().addListener((obs, oldValue, newValue) -> {
-                        updateProgress(newValue.longValue(), hash.getTotalBytes());
-                    });
-                    hash.computeHash(file, algorithm);
-                    data.add(hash);
-                }
-            }
-        };
+			/*
+			 * returns null if there was an error of any kind otherwise returns the desired message digest for file
+			 */
+			private String hashFile(File file, String algorithm) {
+				String hashResult = null;
+				if (file.isFile()) {
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							statusWindow.setText(file.getName());
+						}
+					});
 
-        progressBar.progressProperty().bind(task.progressProperty());
+					HashValue hash = new HashValue(file);
+					hash.bytesProcessedProperty().addListener((obs, oldValue, newValue) -> {
+						updateProgress(newValue.longValue(), hash.getTotalBytes());
+					});
 
-        Thread th = new Thread(task);
-        th.setDaemon(false);
-        th.start();
-    }
+					hashResult = hash.computeHash(file, algorithm);
+					data.add(hash);
+				}
+				return hashResult;
+			}
+		};
+
+		progressBar.progressProperty().bind(task.progressProperty());
+
+		Thread th = new Thread(task);
+		th.setDaemon(false);
+		th.start();
+	}
 
     @FXML
     void doCompareHash(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Newsletter File");
+        fileChooser.setTitle("Compare hash");
         String home = System.getProperty("user.home");
         fileChooser.setInitialDirectory(new File(home));
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Hash file", "*.sum"));
@@ -183,22 +217,47 @@ public class SummerController {
         }
     }
 
-    @FXML
-    void doSave(ActionEvent event) {
-        int i = 0;
-        String s = (String) fileColumn.getCellData(i);
-        while (s != null) {
-            s = (String) fileColumn.getCellData(++i);
-        }
-    }
+	@FXML
+	void doSave(ActionEvent event) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save hash values");
+		String home = System.getProperty("user.home");
+		fileChooser.setInitialDirectory(new File(home));
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Hash file", "*.sum"));
+
+		File sumFile = fileChooser.showSaveDialog(root.getScene().getWindow());
+		if (sumFile != null) {
+			try {
+				BufferedWriter fb = new BufferedWriter(new FileWriter(sumFile));
+				int rowCnt = fileColumn.getTableView().getItems().size();
+				for (int i = 0; i < rowCnt; i++) {
+					String filename = (String) fileColumn.getCellData(i);
+					String hash = (String) hashColumn.getCellData(i);
+					fb.write("\"" + filename + "\"," + hash + "\n");
+				}
+				fb.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
     @FXML
     void doStop(ActionEvent event) {
         System.out.println("stop pressed");
+        task.cancel();
     }
 
     @FXML
     void doClear(ActionEvent event) {
         data.clear();
+        saveButton.setDisable(true); // disable the save button now
+        errorExists = false; // clear the error indicator
+        statusWindow.setText("");
+    }
+    
+    static public boolean isCancelled() {
+    	return task.isCancelled();
     }
 }
