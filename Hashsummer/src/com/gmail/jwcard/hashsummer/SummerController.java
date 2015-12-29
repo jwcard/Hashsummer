@@ -134,79 +134,79 @@ public class SummerController {
         }
     }
 
-	/*
-	 * Spin off a JavaFX Task in the background to handle the computing of hash values for the selected files.
-	 */
-	private void handleCompute(final List<File> files) {
-		task = new Task<Void>() {
-			@Override
-			protected Void call() throws Exception {
-				disableButtons(true);
+    /*
+     * @param value state of general buttons
+     */
+    private void disableButtons(boolean value) {
+        clearButton.setDisable(value);
+        algorithmButton.setDisable(value);
+        calcHashButton.setDisable(value);
+        cmpHashButton.setDisable(value);
+        saveButton.setDisable(value);
+        stopButton.setDisable(!value);
+    }
 
-				String algorithm = algorithmButton.getValue();
-				for (File file : files) {
-					// if cancelled was pressed then save button is not valid
-					if (isCancelled()) {
-						saveButton.setDisable(true);
-						break;
-					}
-					if (hashFile(file, algorithm) == null) {
-						errorExists = true;
-					}
-				}
+    /*
+     * Spin off a JavaFX Task in the background to handle the computing of hash values for the selected files.
+     */
+    private void handleCompute(final List<File> files) {
+        task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                disableButtons(true);
 
-				updateProgress(-1, 0); // reset to indeterminate state
-				disableButtons(false);
+                String algorithm = algorithmButton.getValue();
+                for (File file : files) {
+                    // if cancelled was pressed then save button is not valid
+                    if (isCancelled()) {
+                        saveButton.setDisable(true);
+                        break;
+                    }
+                    if (hashFile(file, algorithm) == null) {
+                        errorExists = true;
+                    }
+                }
 
-				if (errorExists) {
-					saveButton.setDisable(true);
-				}
-				return null;
-			}
+                updateProgress(-1, 0); // reset to indeterminate state
+                disableButtons(false);
 
-			/*
-			 * @param value state of general buttons
-			 */
-			private void disableButtons(boolean value) {
-				clearButton.setDisable(value);
-				algorithmButton.setDisable(value);
-				calcHashButton.setDisable(value);
-				cmpHashButton.setDisable(value);
-				saveButton.setDisable(value);
-				stopButton.setDisable(!value);
-			}
+                if (errorExists) {
+                    saveButton.setDisable(true);
+                }
+                return null;
+            }
 
-			/*
-			 * returns null if there was an error of any kind otherwise returns the desired message digest for file
-			 */
-			private String hashFile(File file, String algorithm) {
-				String hashResult = null;
-				if (file.isFile()) {
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							statusWindow.setText(file.getName());
-						}
-					});
+            /*
+             * returns null if there was an error of any kind otherwise returns the desired message digest for file
+             */
+            private String hashFile(File file, String algorithm) {
+                String hashResult = null;
+                if (file.isFile()) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            statusWindow.setText(file.getName());
+                        }
+                    });
 
-					HashValue hash = new HashValue(file);
-					hash.bytesProcessedProperty().addListener((obs, oldValue, newValue) -> {
-						updateProgress(newValue.longValue(), hash.getTotalBytes());
-					});
+                    HashValue hash = new HashValue(file);
+                    hash.bytesProcessedProperty().addListener((obs, oldValue, newValue) -> {
+                        updateProgress(newValue.longValue(), hash.getTotalBytes());
+                    });
 
-					hashResult = hash.computeHash(file, algorithm);
-					data.add(hash);
-				}
-				return hashResult;
-			}
-		};
+                    hashResult = hash.computeHash(file, algorithm);
+                    data.add(hash);
+                }
+                return hashResult;
+            }
+        };
 
-		progressBar.progressProperty().bind(task.progressProperty());
+        progressBar.progressProperty().bind(task.progressProperty());
 
-		Thread th = new Thread(task);
-		th.setDaemon(false);
-		th.start();
-	}
+        Thread th = new Thread(task);
+        th.setDaemon(false);
+        th.start();
+    }
 
 	@FXML
 	void doCompareHash(ActionEvent event) {
@@ -222,14 +222,7 @@ public class SummerController {
 			try {
 				reader = new CSVReader(new FileReader(sumFile));
 				List<String[]> myEntries = reader.readAll();
-
-				// TODO put the real logic here
-				for (String[] s : myEntries) {
-					for (String x : s) {
-						System.out.print(x + "| ");
-					}
-					System.out.println("");
-				}
+				handleCompare(sumFile.getParent(), myEntries);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -239,6 +232,66 @@ public class SummerController {
 			}
 		}
 	}
+
+    /*
+     * Spin off a JavaFX Task in the background to handle the comparison of hash values for the selected files.
+     */
+    private void handleCompare(final String homeDir, final List<String[]> myEntries) {
+        task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                disableButtons(true);
+
+                String algorithm = algorithmButton.getValue();
+                for (String[] s : myEntries) {
+                    if (isCancelled()) {
+                        break;
+                    }
+
+                    String filename = s[0];
+                    String origHash = s[1];
+
+                    File file = new File(homeDir + filename);
+                    boolean cmpHash = compareHash(file, algorithm, origHash);
+                    if (!cmpHash) {
+                        // TODO ????
+                    }
+                }
+
+                updateProgress(-1, 0); // reset to indeterminate state
+                disableButtons(false);
+
+                return null;
+            }
+
+            private boolean compareHash(final File file, final String algorithm, final String origHash) {
+                boolean hashResult = false;
+                if (file.isFile()) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            statusWindow.setText(file.getName());
+                        }
+                    });
+
+                    HashValue hash = new HashValue(file);
+                    hash.bytesProcessedProperty().addListener((obs, oldValue, newValue) -> {
+                        updateProgress(newValue.longValue(), hash.getTotalBytes());
+                    });
+
+                    hashResult = hash.compareHash(file, algorithm, origHash);
+                    data.add(hash);
+                }
+                return hashResult;
+            }
+        };
+
+        progressBar.progressProperty().bind(task.progressProperty());
+
+        Thread th = new Thread(task);
+        th.setDaemon(false);
+        th.start();
+    }
 
 	@FXML
 	void doSave(ActionEvent event) {
