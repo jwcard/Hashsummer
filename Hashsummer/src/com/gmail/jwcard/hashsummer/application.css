@@ -3,7 +3,10 @@
 }
 
 .table-view {
-    -fx-font: 12px "monospace";
+}
+
+.table-view .column-header .label {
+    -fx-font-weight: bold;
 }
 
 .button {
