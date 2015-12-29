@@ -85,12 +85,7 @@ public class HashValue {
 
             if (!SummerController.isCancelled()) {
                 byte[] hashValue = md.digest();
-                // convert the byte to hex format method 1
-                StringBuffer hashCodeBuffer = new StringBuffer();
-                for (int i = 0; i < hashValue.length; i++) {
-                    hashCodeBuffer.append(Integer.toString((hashValue[i] & 0xff) + 0x100, 16).substring(1));
-                }
-                hash = hashCodeBuffer.toString();
+                hash = javax.xml.bind.DatatypeConverter.printHexBinary(hashValue);
                 this.hash = new SimpleStringProperty(hash);
             } else {
                 this.hash = new SimpleStringProperty("<<Cancelled>>");
@@ -137,12 +132,7 @@ public class HashValue {
 
             if (!SummerController.isCancelled()) {
                 byte[] hashValue = md.digest();
-                // convert the byte to hex format method 1
-                StringBuffer hashCodeBuffer = new StringBuffer();
-                for (int i = 0; i < hashValue.length; i++) {
-                    hashCodeBuffer.append(Integer.toString((hashValue[i] & 0xff) + 0x100, 16).substring(1));
-                }
-                hash = hashCodeBuffer.toString();
+                hash = javax.xml.bind.DatatypeConverter.printHexBinary(hashValue);
             } else {
                 this.hash = new SimpleStringProperty("<<Cancelled>>");
             }
