@@ -183,6 +183,14 @@ public class SummerController {
                 if (errorExists) {
                     saveButton.setDisable(true);
                 }
+
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						statusWindow.setText("*** Done ***");
+					}
+				});
+
                 return null;
             }
 
