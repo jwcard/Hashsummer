@@ -1,6 +1,5 @@
 package com.gmail.jwcard.hashsummer;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -209,6 +208,9 @@ public class SummerController {
 
     @FXML
     void doCompareHash(ActionEvent event) {
+        data.clear();
+        statusWindow.setText("");
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Compare hash");
         String home = System.getProperty("user.home");
@@ -250,7 +252,7 @@ public class SummerController {
                     String filename = s[0];
                     String origHash = s[1];
 
-                    File file = new File(homeDir + filename);
+                    File file = new File(homeDir + System.getProperty("file.separator") + filename);
                     boolean cmpHash = compareHash(file, algorithm, origHash);
                     if (!cmpHash) {
                         // TODO ????
