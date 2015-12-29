@@ -85,6 +85,13 @@ public class SummerController {
 
     // indicates whether or not an error was ever generated when computing hashes
     private boolean errorExists = false;
+    
+    private enum LastOp {
+            HASH,
+            CMPHASH
+    };
+    
+    private LastOp lastOp = LastOp.HASH;
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
@@ -120,6 +127,13 @@ public class SummerController {
 
     @FXML
     void doCalculateHash(ActionEvent event) {
+        // If the last operation was a compare hash then clear the data as the results column is incompatible with the save format
+        if (lastOp == LastOp.CMPHASH) {
+            data.clear();
+            statusWindow.setText("");
+        }
+
+        lastOp = LastOp.HASH;
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Calculate hash on files");
         String home = System.getProperty("user.home");
@@ -232,6 +246,7 @@ public class SummerController {
                 e.printStackTrace();
             }
         }
+        lastOp = LastOp.CMPHASH;
     }
 
     /*
