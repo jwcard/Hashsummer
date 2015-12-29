@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -217,7 +218,7 @@ public class SummerController {
 
 		File sumFile = fileChooser.showOpenDialog(root.getScene().getWindow());
 		if (sumFile != null) {
-			CSVReader reader;
+			CSVReader reader = null;
 			try {
 				reader = new CSVReader(new FileReader(sumFile));
 				List<String[]> myEntries = reader.readAll();
@@ -248,28 +249,23 @@ public class SummerController {
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Hash file", "*.sum"));
 
 		File sumFile = fileChooser.showSaveDialog(root.getScene().getWindow());
-		if (sumFile != null) {
-			try {
-				// TODO http://opencsv.sourceforge.net/
-//				CSVWriter writer = new CSVWriter(new FileWriter("yourfile.csv"), '\t');
-//			     // feed in your array (or convert your data to an array)
-//			     String[] entries = "first#second#third".split("#");
-//			     writer.writeNext(entries);
-//				 writer.close();
-				BufferedWriter fb = new BufferedWriter(new FileWriter(sumFile));
-				int rowCnt = fileColumn.getTableView().getItems().size();
-				for (int i = 0; i < rowCnt; i++) {
-					String filename = (String) fileColumn.getCellData(i);
-					String hash = (String) hashColumn.getCellData(i);
-					fb.write("\"" + filename + "\"," + hash + "\n");
-				}
-				fb.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+        if (sumFile != null) {
+            try {
+                CSVWriter writer = new CSVWriter(new FileWriter(sumFile), ',');
+                String[] entries = new String[2];
+                int rowCnt = fileColumn.getTableView().getItems().size();
+                for (int i = 0; i < rowCnt; i++) {
+                     entries[0] = (String) fileColumn.getCellData(i);
+                     entries[1] = (String) hashColumn.getCellData(i);
+                    writer.writeNext(entries);
+                }
+                writer.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
 
     @FXML
     void doStop(ActionEvent event) {
