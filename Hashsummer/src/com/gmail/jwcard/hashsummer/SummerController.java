@@ -247,6 +247,7 @@ public class SummerController {
             }
         }
         lastOp = LastOp.CMPHASH;
+        saveButton.setDisable(true); // TODO figure out why save button doesn't get disabled
     }
 
     /*
