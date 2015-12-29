@@ -250,6 +250,7 @@ public class SummerController {
         task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+            	final String SEPARATOR = System.getProperty("file.separator");
                 disableButtons(true);
 
                 String algorithm = algorithmButton.getValue();
@@ -261,11 +262,8 @@ public class SummerController {
                     String filename = s[0];
                     String origHash = s[1];
 
-                    File file = new File(homeDir + System.getProperty("file.separator") + filename);
-                    boolean cmpHash = compareHash(file, algorithm, origHash);
-                    if (!cmpHash) {
-                        // TODO ????
-                    }
+                    File file = new File(homeDir + SEPARATOR + filename);
+                    compareHash(file, algorithm, origHash);
                 }
 
                 updateProgress(-1, 0); // reset to indeterminate state
