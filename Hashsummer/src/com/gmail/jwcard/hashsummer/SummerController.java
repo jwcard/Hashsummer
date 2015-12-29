@@ -87,6 +87,10 @@ public class SummerController {
     private boolean errorExists = false;
     
     private LastOp lastOp = LastOp.HASH;
+    
+    final static int FILENAME = 0;
+    final static int RESULT = 1;
+    final static int NUM_FIELDS = 2;
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
@@ -259,8 +263,8 @@ public class SummerController {
                         break;
                     }
 
-                    String filename = s[0];
-                    String origHash = s[1];
+                    String filename = s[FILENAME];
+                    String origHash = s[RESULT];
 
                     File file = new File(homeDir + SEPARATOR + filename);
                     compareHash(file, algorithm, origHash);
@@ -313,11 +317,11 @@ public class SummerController {
         if (sumFile != null) {
             try {
                 CSVWriter writer = new CSVWriter(new FileWriter(sumFile), ',');
-                String[] entries = new String[2];
+                String[] entries = new String[NUM_FIELDS];
                 int rowCnt = fileColumn.getTableView().getItems().size();
                 for (int i = 0; i < rowCnt; i++) {
-                    entries[0] = (String) fileColumn.getCellData(i);
-                    entries[1] = (String) hashColumn.getCellData(i);
+                    entries[FILENAME] = (String) fileColumn.getCellData(i);
+                    entries[RESULT] = (String) hashColumn.getCellData(i);
                     writer.writeNext(entries);
                 }
                 writer.close();
