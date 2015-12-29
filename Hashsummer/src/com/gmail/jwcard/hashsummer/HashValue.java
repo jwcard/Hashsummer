@@ -85,7 +85,7 @@ public class HashValue {
 
             if (!SummerController.isCancelled()) {
                 byte[] hashValue = md.digest();
-                hash = javax.xml.bind.DatatypeConverter.printHexBinary(hashValue);
+                hash = javax.xml.bind.DatatypeConverter.printHexBinary(hashValue).toLowerCase();
                 this.hash = new SimpleStringProperty(hash);
             } else {
                 this.hash = new SimpleStringProperty("<<Cancelled>>");
@@ -132,7 +132,7 @@ public class HashValue {
 
             if (!SummerController.isCancelled()) {
                 byte[] hashValue = md.digest();
-                hash = javax.xml.bind.DatatypeConverter.printHexBinary(hashValue);
+                hash = javax.xml.bind.DatatypeConverter.printHexBinary(hashValue).toLowerCase();
             } else {
                 this.hash = new SimpleStringProperty("<<Cancelled>>");
             }
@@ -142,7 +142,7 @@ public class HashValue {
 
         boolean isMatch = false;
         if (hash != null) {
-            isMatch = hash.toLowerCase().equals(origHash.toLowerCase());
+            isMatch = hash.equals(origHash.toLowerCase());
             if (isMatch) {
                 this.hash = new SimpleStringProperty("Matches");
             } else {
