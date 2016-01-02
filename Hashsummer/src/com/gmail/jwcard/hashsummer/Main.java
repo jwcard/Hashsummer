@@ -1,5 +1,7 @@
 package com.gmail.jwcard.hashsummer;
 	
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -18,6 +20,13 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			primaryStage.setTitle("Hashsummer");
+			
+			Parameters parms = getParameters();
+			List<String> args = parms.getRaw();
+			
+			for (String s:args) {
+				System.out.println(s);
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
