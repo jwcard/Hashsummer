@@ -88,11 +88,13 @@ public class SummerController {
     
     private LastOp lastOp = LastOp.HASH;
     
+    private static List<String> arguments = null;
+    
     final static int FILENAME = 0;
     final static int RESULT = 1;
     final static int NUM_FIELDS = 2;
 
-    @FXML // This method is called by the FXMLLoader when initialization is complete
+	@FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert clearButton != null : "fx:id=\"clearButton\" was not injected: check your FXML file 'Summer.fxml'.";
         assert algorithmButton != null : "fx:id=\"algorithmButton\" was not injected: check your FXML file 'Summer.fxml'.";
@@ -122,6 +124,13 @@ public class SummerController {
 
         fileColumn.setCellValueFactory(new PropertyValueFactory<>("filename"));
         hashColumn.setCellValueFactory(new PropertyValueFactory<>("hash"));
+        
+        if ((arguments != null) && (arguments.size() > 0)) {
+        	File file = new File(arguments.get(0));
+        	if (file.exists() && file.isFile()) {
+        		// TODO do something with the filename
+        	}
+        }
     }
 
     @FXML
@@ -348,11 +357,21 @@ public class SummerController {
         errorExists = false; // clear the error indicator
     }
 
-    /**
-     * Allows other objects to query whether they should abort their processing
-     * 
-     * @return true if a cancel request has been made otherwise false
-     */
+	/**
+	 * Allows main to pass the arguments to this class
+	 * 
+	 * @param args
+	 *            List<String> copy of the command line arguments
+	 */
+	public static void setArgs(final List<String> args) {
+		arguments = args;
+	}
+
+	/**
+	 * Allows other objects to query whether they should abort their processing
+	 * 
+	 * @return true if a cancel request has been made otherwise false
+	 */
     static public boolean isCancelled() {
         return task.isCancelled();
     }
