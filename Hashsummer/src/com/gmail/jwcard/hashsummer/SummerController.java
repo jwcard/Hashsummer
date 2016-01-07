@@ -88,6 +88,9 @@ public class SummerController {
     
     private LastOp lastOp = LastOp.HASH;
     
+    // Indicates whether any action has been taken (hash or compare)
+    private boolean tableDirty = false;
+    
     private static List<String> arguments = null;
     
     final static int FILENAME = 0;
@@ -150,19 +153,10 @@ public class SummerController {
         if (files != null) {
             handleCompute(files);
             saveButton.setDisable(false); // enable the save button now
-        }
-    }
 
-    /*
-     * @param value state of general buttons
-     */
-    private void disableButtons(boolean value) {
-        clearButton.setDisable(value);
-        algorithmButton.setDisable(value);
-        calcHashButton.setDisable(value);
-        cmpHashButton.setDisable(value);
-        saveButton.setDisable(value);
-        stopButton.setDisable(!value);
+            tableDirty = true;
+            algorithmButton.setDisable(true);
+        }
     }
 
     /*
@@ -255,6 +249,9 @@ public class SummerController {
                 e.printStackTrace();
             }
         }
+
+        tableDirty = true;
+        algorithmButton.setDisable(true);
         lastOp = LastOp.CMPHASH;
         saveButton.setDisable(true); // TODO figure out why save button doesn't get disabled
     }
@@ -355,6 +352,21 @@ public class SummerController {
     	clearInfo(); // start anew...
         saveButton.setDisable(true); // disable the save button now
         errorExists = false; // clear the error indicator
+        
+        tableDirty = true;
+        algorithmButton.setDisable(false);
+    }
+
+    /*
+     * @param value state of general buttons
+     */
+    private void disableButtons(boolean value) {
+        clearButton.setDisable(value);
+        algorithmButton.setDisable(value | tableDirty); // don't reenable if there is data in the table
+        calcHashButton.setDisable(value);
+        cmpHashButton.setDisable(value);
+        saveButton.setDisable(value);
+        stopButton.setDisable(!value);
     }
 
 	/**
