@@ -226,8 +226,6 @@ public class SummerController {
 
     @FXML
     void doCompareHash(ActionEvent event) {
-        clearInfo();
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Compare hash");
         String home = System.getProperty("user.home");
@@ -236,6 +234,8 @@ public class SummerController {
 
         File sumFile = fileChooser.showOpenDialog(root.getScene().getWindow());
         if (sumFile != null) {
+            clearInfo();
+
             CSVReader reader = null;
             try {
                 reader = new CSVReader(new FileReader(sumFile));
@@ -248,12 +248,12 @@ public class SummerController {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }
 
-        tableDirty = true;
-        algorithmButton.setDisable(true);
-        lastOp = LastOp.CMPHASH;
-        saveButton.setDisable(true); // TODO figure out why save button doesn't get disabled
+            tableDirty = true;
+            algorithmButton.setDisable(true);
+            lastOp = LastOp.CMPHASH;
+            saveButton.setDisable(true); // TODO figure out why save button doesn't get disabled
+        }
     }
 
     /*
