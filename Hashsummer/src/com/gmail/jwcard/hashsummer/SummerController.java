@@ -21,6 +21,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
@@ -28,6 +29,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -131,9 +133,16 @@ public class SummerController {
         if ((arguments != null) && (arguments.size() > 0)) {
         	File file = new File(arguments.get(0));
         	if (file.exists() && file.isFile()) {
-        		// TODO do something with the filename
+        	    showAlert(file.toString());
+        	    processHashFile(file);
         	}
         }
+    }
+
+    private void showAlert(String s) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setContentText(s);
+        alert.showAndWait();
     }
 
     @FXML
@@ -234,26 +243,30 @@ public class SummerController {
 
         File sumFile = fileChooser.showOpenDialog(root.getScene().getWindow());
         if (sumFile != null) {
-            clearInfo();
-
-            CSVReader reader = null;
-            try {
-                reader = new CSVReader(new FileReader(sumFile));
-                List<String[]> myEntries = reader.readAll();
-                handleCompare(sumFile.getParent(), myEntries);
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-            tableDirty = true;
-            algorithmButton.setDisable(true);
-            lastOp = LastOp.CMPHASH;
-            saveButton.setDisable(true); // TODO figure out why save button doesn't get disabled
+            processHashFile(sumFile);
         }
+    }
+
+    private void processHashFile(File sumFile) {
+        clearInfo();
+
+        CSVReader reader = null;
+        try {
+            reader = new CSVReader(new FileReader(sumFile));
+            List<String[]> myEntries = reader.readAll();
+            handleCompare(sumFile.getParent(), myEntries);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        tableDirty = true;
+        algorithmButton.setDisable(true);
+        lastOp = LastOp.CMPHASH;
+        saveButton.setDisable(true); // TODO figure out why save button doesn't get disabled
     }
 
     /*
