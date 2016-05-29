@@ -1,7 +1,5 @@
 package com.gmail.jwcard.hashsummer;
 	
-import java.util.List;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -12,8 +10,8 @@ import javafx.fxml.FXMLLoader;
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
-		List<String> args = getParameters().getRaw();
-		SummerController.setArgs(args);
+//		List<String> args = getParameters().getRaw();
+//		SummerController.setArgs(args);
 
 		try {
 			BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("Summer.fxml"));

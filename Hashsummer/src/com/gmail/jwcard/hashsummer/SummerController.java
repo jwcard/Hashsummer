@@ -21,7 +21,6 @@ import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
@@ -29,7 +28,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -93,7 +91,7 @@ public class SummerController {
     // Indicates whether any action has been taken (hash or compare)
     private boolean tableDirty = false;
     
-    private static List<String> arguments = null;
+//    private static List<String> arguments = null;
     
     final static int FILENAME = 0;
     final static int RESULT = 1;
@@ -130,20 +128,20 @@ public class SummerController {
         fileColumn.setCellValueFactory(new PropertyValueFactory<>("filename"));
         hashColumn.setCellValueFactory(new PropertyValueFactory<>("hash"));
         
-        if ((arguments != null) && (arguments.size() > 0)) {
-        	File file = new File(arguments.get(0));
-        	if (file.exists() && file.isFile()) {
-        	    showAlert(file.toString());
-        	    processHashFile(file);
-        	}
-        }
+//        if ((arguments != null) && (arguments.size() > 0)) {
+//        	File file = new File(arguments.get(0));
+//        	if (file.exists() && file.isFile()) {
+//        	    showAlert(file.toString());
+//        	    processHashFile(file);
+//        	}
+//        }
     }
 
-    private void showAlert(String s) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setContentText(s);
-        alert.showAndWait();
-    }
+//    private void showAlert(String s) {
+//        Alert alert = new Alert(AlertType.ERROR);
+//        alert.setContentText(s);
+//        alert.showAndWait();
+//    }
 
     @FXML
     void doCalculateHash(ActionEvent event) {
@@ -388,9 +386,9 @@ public class SummerController {
 	 * @param args
 	 *            List<String> copy of the command line arguments
 	 */
-	public static void setArgs(final List<String> args) {
-		arguments = args;
-	}
+//	public static void setArgs(final List<String> args) {
+//		arguments = args;
+//	}
 
 	/**
 	 * Allows other objects to query whether they should abort their processing
